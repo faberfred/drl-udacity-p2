@@ -1,0 +1,4 @@
+# ignore the following entries
+.ipynb_checkpoints/
+__pycache__/
+unity-environment.log
