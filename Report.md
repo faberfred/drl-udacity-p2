@@ -45,7 +45,9 @@ A **batch normalization** is used for the input and the two hidden layers.
 
 ### Agent
 
-The project has been solved with a **DDPG** agent. 
+The project has been solved with a **DDPG** agent. The Implementation of the DDGP agent is done according to [`DDPG`](https://arxiv.org/pdf/1509.02971.pdf)
+
+##### Hyperparameter
 - The replay buffer size is 100000
 - The batch size is 128
 - Gamma = 0.99
@@ -53,7 +55,25 @@ The project has been solved with a **DDPG** agent.
 - Learning rate for the Actor = 0.0001
 - Learning rate for the Critic = 0.001
 - The weight decay is 0
-The Implementation of the DDGP agent is done according to [`DDPG`](https://arxiv.org/pdf/1509.02971.pdf)
+
+##### Algorithm Description
+1. Each of the 20 agents receives the 33 environmet values.
+2. Each agent passes these values through the `local-actor network` to receive 4 action values as a result. To encourage exploration, some noise, according to an Ornstein-Uhlenbeck process, is added to the predicted actions.
+3. The action values are executed. Each agent receives from the environment the next state, reward, and the value of done according to the action values that have been presented to the environment.
+4. The experience tuple of each agent consisting of the `state, action, reward, next state, done` is added to a shared replay buffer.
+5. If there are enough elements within the replay buffer, randomly sample a batch of experiences from the replay buffer.
+6. Use the sample to update the weights of the `local-critic network`:
+ 	- obtain the next-action by a forward pass through the `target-actor network`.
+ 	- obtain the Q-value for the next-state and next-action by a forward pass through the `target-critic network`.
+ 	- obtain the target Q-value y<sub>i</sub> = `reward + Gamma * Q-value(next-state, next-action)`.
+ 	- obtain the current Q-Value by a forward pass of the current states and current actions through the `local-critic network`.
+ 	- compute the loss between the current Q-Values and the target Q-Values.
+ 	- update the weights of the `local-critec network`.
+ 7. Use the sample to update the weights of the `local-actor network`:
+ 	- obtain predictid actions by a forward pass of the current state through the `local-actor network`.
+ 	- use the current state and the predicted actions for a forward pass through the `local-critic network` to get the predicted Q-values.
+ 	- use the negative mean of the predicted Q-values to update the weights of the `local-actor network`.
+8. Soft-update the `target-actor network` and the `target-critic network`. 
 
 ### Training
 
@@ -66,3 +86,6 @@ The result of the training is shown in the plot below:
 
 ![Training results](./Result_DDPG.png  "Training results")
 
+
+### Future Improvements
+To improve performance one might consider to optimize the hyperparameter like the network architecture, learning rates etc. and / or use alternative learning algorithms like A2C, A3C or D4PG. 
