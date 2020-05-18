@@ -22,6 +22,6 @@ A reward of +0.1 is provided for each step that the agent's hand is in the goal 
 **`Pytorch 1.4.0`** has been used with **`CUDAToolkit 10.1`**.
 The operating system is `ubuntu 18.04`.
 Unity 2019.3 has been installed on the computer.
-The Unity environment is `Banana_Linux/Banana.x86_64` and has been provided by Udacity. 
+The Unity environment is `Reacher_Linux_Version2/Reacher.x86_64` and has been provided by Udacity. It cab ne downloaded [here](https://s3-us-west-1.amazonaws.com/udacity-drlnd/P2/Reacher/Reacher_Linux.zip)
 
 **Train the agent by executing the whole jupyter notebook from the beginning to the end**
